@@ -3,6 +3,9 @@ package se.cygni.expenses;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
+import com.yammer.dropwizard.jdbi.DBIFactory;
+import org.skife.jdbi.v2.DBI;
+import org.skife.jdbi.v2.Handle;
 import se.cygni.expenses.resources.EventsResource;
 
 public class MainService extends Service<MainConfiguration> {
@@ -16,7 +19,47 @@ public class MainService extends Service<MainConfiguration> {
     }
 
     @Override
-    public void run(MainConfiguration mainConfiguration, Environment environment) throws Exception {
+    public void run(MainConfiguration config, Environment environment) throws Exception {
+
+        initDatabaseConnection(config, environment);
+
+        //final UserDAO dao = jdbi.onDemand(UserDAO.class);
+        //environment.addResource(new UserResource(dao));
+
         environment.addResource(new EventsResource());
+    }
+
+    private DBI initDatabaseConnection(MainConfiguration config, Environment environment) throws ClassNotFoundException {
+
+        final DBIFactory factory = new DBIFactory();
+        final DBI jdbi = factory.build(environment, config.getDatabaseConfiguration(), "db");
+
+        createTables(jdbi);
+
+        return jdbi;
+    }
+
+    private void createTables(DBI dbi) {
+
+        Handle handle = dbi.open();
+
+        handle.execute("CREATE TABLE IF NOT EXISTS event (" +
+                "id LONG, " +
+                "description VARCHAR(40), " +
+                "PRIMARY KEY(id)" +
+                ")");
+
+        handle.execute("CREATE TABLE IF NOT EXISTS expense (" +
+                "id LONG, " +
+                "description VARCHAR(40), " +
+                "person VARCHAR(55), " +
+                "date TIMESTAMP, " +
+                "amount LONG, " +
+                "eventId LONG, " +
+                "PRIMARY KEY(id), " +
+                "FOREIGN KEY(eventId) REFERENCES event(id)" +
+                ")");
+
+        handle.close();
     }
 }
