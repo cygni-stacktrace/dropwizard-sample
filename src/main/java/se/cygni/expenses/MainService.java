@@ -44,18 +44,18 @@ public class MainService extends Service<MainConfiguration> {
         Handle handle = dbi.open();
 
         handle.execute("CREATE TABLE IF NOT EXISTS event (" +
-                "id LONG, " +
+                "id BIGINT, " +
                 "description VARCHAR(40), " +
                 "PRIMARY KEY(id)" +
                 ")");
 
         handle.execute("CREATE TABLE IF NOT EXISTS expense (" +
-                "id LONG, " +
+                "id BIGINT, " +
                 "description VARCHAR(40), " +
                 "person VARCHAR(55), " +
                 "date TIMESTAMP, " +
-                "amount LONG, " +
-                "eventId LONG, " +
+                "amount INT, " +
+                "eventId BIGINT, " +
                 "PRIMARY KEY(id), " +
                 "FOREIGN KEY(eventId) REFERENCES event(id)" +
                 ")");
