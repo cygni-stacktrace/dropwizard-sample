@@ -14,7 +14,7 @@ public class EventsResource {
     @GET
     public Map getEvents() {
         HashMap<String,Object> hashMap = new HashMap<String, Object>();
-        hashMap.put("links", "");
+        hashMap.put("links", "/listEvent");
         return hashMap;
     }
 }

@@ -20,7 +20,7 @@ public class EventsResourceTest extends ResourceTest {
         String result = client().resource("/").get(String.class);
 
         //then
-        assertThat("Result contains links element", result, is("{\"links\":\"\"}"));
+        assertThat("Result contains links element", result, is("{\"links\":\"/listEvent\"}"));
 
     }
 
