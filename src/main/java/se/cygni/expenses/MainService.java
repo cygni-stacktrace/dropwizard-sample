@@ -6,6 +6,7 @@ import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.jdbi.DBIFactory;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
+import se.cygni.expenses.jdbi.EventsRepository;
 import se.cygni.expenses.resources.EventsResource;
 
 public class MainService extends Service<MainConfiguration> {
@@ -21,12 +22,14 @@ public class MainService extends Service<MainConfiguration> {
     @Override
     public void run(MainConfiguration config, Environment environment) throws Exception {
 
-        initDatabaseConnection(config, environment);
+        DBI dbi = initDatabaseConnection(config, environment);
+
+        final EventsRepository eventsRepository = dbi.onDemand(EventsRepository.class);
 
         //final UserDAO dao = jdbi.onDemand(UserDAO.class);
         //environment.addResource(new UserResource(dao));
 
-        environment.addResource(new EventsResource());
+        environment.addResource(new EventsResource(eventsRepository));
     }
 
     private DBI initDatabaseConnection(MainConfiguration config, Environment environment) throws ClassNotFoundException {

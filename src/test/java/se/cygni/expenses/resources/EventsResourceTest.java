@@ -1,15 +1,29 @@
 package se.cygni.expenses.resources;
 
+import com.sun.jersey.api.client.GenericType;
 import com.yammer.dropwizard.testing.ResourceTest;
 import org.junit.Test;
+import se.cygni.expenses.api.Event;
+import se.cygni.expenses.jdbi.EventsRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class EventsResourceTest extends ResourceTest {
+
+    private EventsRepository eventsRepository;
+
     @Override
     protected void setUpResources() throws Exception {
-        addResource(new EventsResource());
+        eventsRepository = mock(EventsRepository.class);
+        addResource(new EventsResource(eventsRepository));
     }
 
     @Test
@@ -24,4 +38,17 @@ public class EventsResourceTest extends ResourceTest {
 
     }
 
+    @Test
+    public void shouldListEvents() {
+        // given
+
+        when(eventsRepository.findAll()).thenReturn(Arrays.asList(new Event(0, "Trip", new Date(0))));
+
+        // when
+        List<Event> result = client().resource("/listEvents").get(new GenericType<List<Event>>() {});
+
+        //then
+        assertThat("Result should contain one element", result.size(), is(1));
+        assertThat("First element shoul have Trip as name", result.get(0).getName(), is("Trip"));
+    }
 }
