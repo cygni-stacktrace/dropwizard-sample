@@ -1,15 +1,15 @@
 database:
   # the name of your JDBC driver
-  driverClass: org.hsqldb.jdbcDriver
+  driverClass: org.postgresql.Driver
 
   # the username
-  user: sa
+  user: agxdqehydamytj
 
   # the password
-  password:
+  password: cwyqxy-Wm845wEWHzeUeEQ5M5W
 
   # the JDBC URL
-  url: jdbc:hsqldb:mem:expenses
+  url: jdbc:postgresql://ec2-54-243-230-118.compute-1.amazonaws.com:5432/d4t98h8bdocneh?ssl=true
 
   # any properties specific to your JDBC driver:
   properties:
