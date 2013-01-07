@@ -9,7 +9,7 @@ database:
   password: cwyqxy-Wm845wEWHzeUeEQ5M5W
 
   # the JDBC URL
-  url: jdbc:postgresql://ec2-54-243-230-118.compute-1.amazonaws.com:5432/d4t98h8bdocneh?ssl=true
+  url: jdbc:postgresql://ec2-54-243-230-118.compute-1.amazonaws.com:5432/d4t98h8bdocneh
 
   # any properties specific to your JDBC driver:
   properties:
