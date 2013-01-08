@@ -19,7 +19,7 @@ public class ExpensesRepositoryTest {
     @Test
     public void shouldListExpensesForEvent() {
         //given
-        JdbcConnectionPool ds = JdbcConnectionPool.create("jdbc:h2:mem:test2", "sa", "");
+        JdbcConnectionPool ds = JdbcConnectionPool.create("jdbc:h2:mem:test3", "sa", "");
 
         DBI dbi = new DBI(ds);
 
@@ -28,8 +28,8 @@ public class ExpensesRepositoryTest {
         insertEvent(dbi, new Event(1, "Cancun", new Date(0)));
         insertEvent(dbi, new Event(2, "New Delhi", new Date(1554)));
 
-        insertExpense(dbi, new Expense(3, "Dinner at O Learys", "Kalle", new Date(342432432), 670, 2));
-        insertExpense(dbi, new Expense(4, "Taxi Home", "Anders", new Date(342432432), 345, 2));
+        insertExpense(dbi, new Expense(3, "Dinner at O Learys", "Kalle", new Date(342432432584L), 670, 2));
+        insertExpense(dbi, new Expense(4, "Taxi Home", "Anders", new Date(342432437584L), 345, 2));
 
         ExpensesRepository target = dbi.open(ExpensesRepository.class);
 
