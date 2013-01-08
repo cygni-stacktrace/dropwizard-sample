@@ -1,11 +1,14 @@
 package se.cygni.expenses.api;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Event {
 
     private long id;
     private String name;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ssz")
     private Date date;
 
     public Event() {
