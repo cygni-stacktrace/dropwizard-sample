@@ -14,6 +14,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class EventsResourceTest extends ResourceTest {
@@ -49,6 +50,18 @@ public class EventsResourceTest extends ResourceTest {
 
         //then
         assertThat("Result should contain one element", result.size(), is(1));
-        assertThat("First element shoul have Trip as name", result.get(0).getName(), is("Trip"));
+        assertThat("First element should have Trip as name", result.get(0).getName(), is("Trip"));
+    }
+
+    //@Test
+    public void shouldAddEvent() {
+        //given
+        Event event = new Event(1, "Big bird", new Date());
+
+        //when
+        client().resource("/addEvent").put(Event.class, event);
+
+        //then
+        verify(eventsRepository).add(event);
     }
 }
