@@ -1,5 +1,6 @@
 package se.cygni.expenses.jdbi;
 
+import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import se.cygni.expenses.api.Expense;
@@ -24,4 +25,6 @@ public interface ExpensesRepository {
     @SqlQuery("select * from expense")
     List<Expense> findAll();
 
+    @SqlQuery("select * from expense where eventId = :eventId")
+    List<Expense> findExpensesForEventId(@Bind("eventId") long eventId);
 }

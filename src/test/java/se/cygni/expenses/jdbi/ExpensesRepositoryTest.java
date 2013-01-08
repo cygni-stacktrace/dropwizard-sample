@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import se.cygni.expenses.api.Event;
+import se.cygni.expenses.api.Expense;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,10 +14,10 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class EventsRepositoryTest {
+public class ExpensesRepositoryTest {
 
     @Test
-    public void shouldListEvents() {
+    public void shouldListExpensesForEvent() {
         //given
         JdbcConnectionPool ds = JdbcConnectionPool.create("jdbc:h2:mem:test2", "sa", "");
 
@@ -27,10 +28,13 @@ public class EventsRepositoryTest {
         insertEvent(dbi, new Event(1, "Cancun", new Date(0)));
         insertEvent(dbi, new Event(2, "New Delhi", new Date(1554)));
 
-        EventsRepository target = dbi.open(EventsRepository.class);
+        insertExpense(dbi, new Expense(3, "Dinner at O Learys", "Kalle", new Date(342432432), 670, 2));
+        insertExpense(dbi, new Expense(4, "Taxi Home", "Anders", new Date(342432432), 345, 2));
+
+        ExpensesRepository target = dbi.open(ExpensesRepository.class);
 
         //when
-        List<Event> result = target.findAll();
+        List<Expense> result = target.findExpensesForEventId(2);
         //then
 
         assertThat("result contains two elements", result.size(), is(2));
@@ -51,13 +55,30 @@ public class EventsRepositoryTest {
                 "(" + event.getId() + "," +
                 "'" + event.getName() + "'," +
                 "'" + sdf.format(event.getDate()) + "')");
+    }
 
+    private void insertExpense(DBI dbi, Expense expense) {
+        Handle handle = dbi.open();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        handle.execute("insert into expense " +
+                "(id, description, person, date, amount, eventId) " +
+                "values " +
+                "(" + expense.getId() + "," +
+                "'" + expense.getDescription() + "'," +
+                "'" + expense.getPerson() + "'," +
+                "'" + sdf.format(expense.getDate()) + "', " +
+                expense.getAmount() + "," +
+                expense.getEventId() + "," +
+                ")");
     }
 
     private void createTables(DBI dbi) {
 
         Handle handle = dbi.open();
         handle.execute(EventsRepository.CREATE_TABLE_STATEMENT);
+        handle.execute(ExpensesRepository.CREATE_TABLE_STATEMENT);
         handle.close();
     }
 
