@@ -4,20 +4,20 @@ import java.util.Date;
 
 public class Event {
 
-    private int id;
+    private long id;
     private String name;
     private Date date;
 
     public Event() {
     }
 
-    public Event(int id, String name, Date date) {
+    public Event(long id, String name, Date date) {
         this.id = id;
         this.name = name;
         this.date = date;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -45,7 +45,7 @@ public class Event {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;

@@ -7,6 +7,7 @@ import com.yammer.dropwizard.jdbi.DBIFactory;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import se.cygni.expenses.jdbi.EventsRepository;
+import se.cygni.expenses.jdbi.ExpensesRepository;
 import se.cygni.expenses.resources.EventsResource;
 
 public class MainService extends Service<MainConfiguration> {
@@ -46,23 +47,9 @@ public class MainService extends Service<MainConfiguration> {
 
         Handle handle = dbi.open();
 
-        handle.execute("CREATE TABLE IF NOT EXISTS event (" +
-                "id BIGINT, " +
-                "name VARCHAR(40), " +
-                "date TIMESTAMP, " +
-                "PRIMARY KEY(id)" +
-                ")");
+        handle.execute(EventsRepository.CREATE_TABLE_STATEMENT);
 
-        handle.execute("CREATE TABLE IF NOT EXISTS expense (" +
-                "id BIGINT, " +
-                "description VARCHAR(40), " +
-                "person VARCHAR(55), " +
-                "date TIMESTAMP, " +
-                "amount INT, " +
-                "eventId BIGINT, " +
-                "PRIMARY KEY(id), " +
-                "FOREIGN KEY(eventId) REFERENCES event(id)" +
-                ")");
+        handle.execute(ExpensesRepository.CREATE_TABLE_STATEMENT);
 
         handle.close();
     }
