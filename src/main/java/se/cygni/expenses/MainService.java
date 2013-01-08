@@ -1,6 +1,7 @@
 package se.cygni.expenses;
 
 import com.yammer.dropwizard.Service;
+import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.jdbi.DBIFactory;
@@ -17,7 +18,7 @@ public class MainService extends Service<MainConfiguration> {
 
     @Override
     public void initialize(Bootstrap<MainConfiguration> mainConfigurationBootstrap) {
-
+        mainConfigurationBootstrap.addBundle(new AssetsBundle("/assets/", "/"));
     }
 
     @Override
