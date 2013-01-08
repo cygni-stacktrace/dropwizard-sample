@@ -58,12 +58,7 @@ public class EventsRepositoryTest {
 
         Handle handle = dbi.open();
 
-        handle.execute("CREATE TABLE IF NOT EXISTS event (" +
-                "id BIGINT, " +
-                "name VARCHAR(40), " +
-                "date TIMESTAMP, " +
-                "PRIMARY KEY(id)" +
-                ")");
+        handle.execute(EventsRepository.CREATE_TABLE_STATEMENT);
 
         handle.execute("CREATE TABLE IF NOT EXISTS expense (" +
                 "id BIGINT, " +

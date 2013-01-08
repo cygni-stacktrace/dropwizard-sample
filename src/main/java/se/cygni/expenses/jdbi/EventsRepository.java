@@ -1,6 +1,5 @@
 package se.cygni.expenses.jdbi;
 
-import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
@@ -11,6 +10,14 @@ import java.util.List;
 
 @RegisterMapper(EventMapper.class)
 public interface EventsRepository {
+
+    public static String CREATE_TABLE_STATEMENT =
+            "CREATE TABLE IF NOT EXISTS event (" +
+                "id BIGINT, " +
+                "name VARCHAR(40), " +
+                "date TIMESTAMP, " +
+                "PRIMARY KEY(id)" +
+                ")";
 
     @SqlQuery("select * from event")
     List<Event> findAll();

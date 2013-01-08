@@ -20,7 +20,7 @@ public class EventMapperTest {
     public void shouldMapAnEvent() throws SQLException {
         //given
         String eventName = "The movies";
-        int eventId = 17;
+        long eventId = 17;
         Date eventDate = new Date(0);
         Timestamp eventTimestamp = new Timestamp(0);
 
@@ -28,7 +28,7 @@ public class EventMapperTest {
 
         ResultSet resultSet = mock(ResultSet.class);
         given(resultSet.getString("name")).willReturn(eventName);
-        given(resultSet.getInt("id")).willReturn(eventId);
+        given(resultSet.getLong("id")).willReturn(eventId);
         given(resultSet.getTimestamp("date")).willReturn(eventTimestamp);
 
         //when

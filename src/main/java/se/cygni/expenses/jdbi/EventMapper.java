@@ -11,6 +11,6 @@ import java.util.Date;
 public class EventMapper implements ResultSetMapper<Event> {
     @Override
     public Event map(int i, ResultSet resultSet, StatementContext statementContext) throws SQLException {
-        return new Event(resultSet.getInt("id"), resultSet.getString("name"), new Date(resultSet.getTimestamp("date").getTime()));
+        return new Event(resultSet.getLong("id"), resultSet.getString("name"), new Date(resultSet.getTimestamp("date").getTime()));
     }
 }
