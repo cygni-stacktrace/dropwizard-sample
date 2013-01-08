@@ -11,9 +11,11 @@ import java.util.List;
 @RegisterMapper(EventMapper.class)
 public interface EventsRepository {
 
-    public static String CREATE_TABLE_STATEMENT =
-            "CREATE TABLE IF NOT EXISTS event (" +
-                "id BIGINT, " +
+    public static final String TABLE_NAME = "event";
+
+    public static final String CREATE_TABLE_STATEMENT =
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+                "id SERIAL, " +
                 "name VARCHAR(40), " +
                 "date TIMESTAMP, " +
                 "PRIMARY KEY(id)" +
@@ -22,6 +24,6 @@ public interface EventsRepository {
     @SqlQuery("select * from event")
     List<Event> findAll();
 
-    @SqlUpdate("insert into event (id, name, date) values (:id, :name, :date)")
+    @SqlUpdate("insert into event (name, date) values (:name, :date)")
     void add(@BindBean Event event);
 }
