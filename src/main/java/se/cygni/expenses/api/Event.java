@@ -40,7 +40,7 @@ public class Event {
         Event event = (Event) o;
 
         if (id != event.id) return false;
-        if (date != null ? !date.equals(event.date) : event.date != null) return false;
+        //if (date != null ? !date.equals(event.date) : event.date != null) return false;
         if (name != null ? !name.equals(event.name) : event.name != null) return false;
 
         return true;
