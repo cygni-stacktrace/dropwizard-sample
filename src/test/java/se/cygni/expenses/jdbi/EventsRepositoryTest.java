@@ -6,6 +6,7 @@ import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import se.cygni.expenses.api.Event;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class EventsRepositoryTest {
         createTables(dbi);
 
         insertEvent(dbi, new Event(1, "Cancun", new Date(0)));
+        insertEvent(dbi, new Event(2, "New Delhi", new Date(1554)));
 
         EventsRepository target = dbi.open(EventsRepository.class);
 
@@ -41,12 +43,14 @@ public class EventsRepositoryTest {
     private void insertEvent(DBI dbi, Event event) {
         Handle handle = dbi.open();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
         handle.execute("insert into event " +
                 "(id, name, date) " +
                 "values " +
                 "(" + event.getId() + "," +
-                "(" + event.getName() + "," +
-                "(" + event.getDate() + ")");
+                "'" + event.getName() + "'," +
+                "'" + sdf.format(event.getDate()) + "')");
 
     }
 
@@ -56,7 +60,8 @@ public class EventsRepositoryTest {
 
         handle.execute("CREATE TABLE IF NOT EXISTS event (" +
                 "id BIGINT, " +
-                "description VARCHAR(40), " +
+                "name VARCHAR(40), " +
+                "date TIMESTAMP, " +
                 "PRIMARY KEY(id)" +
                 ")");
 

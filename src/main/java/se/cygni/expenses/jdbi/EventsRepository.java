@@ -1,6 +1,5 @@
 package se.cygni.expenses.jdbi;
 
-import com.sun.tools.internal.ws.wsdl.document.BindingOperation;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;

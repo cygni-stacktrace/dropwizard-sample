@@ -48,7 +48,8 @@ public class MainService extends Service<MainConfiguration> {
 
         handle.execute("CREATE TABLE IF NOT EXISTS event (" +
                 "id BIGINT, " +
-                "description VARCHAR(40), " +
+                "name VARCHAR(40), " +
+                "date TIMESTAMP, " +
                 "PRIMARY KEY(id)" +
                 ")");
 
