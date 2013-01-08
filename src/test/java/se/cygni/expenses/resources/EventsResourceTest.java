@@ -6,6 +6,7 @@ import org.junit.Test;
 import se.cygni.expenses.api.Event;
 import se.cygni.expenses.jdbi.EventsRepository;
 
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -53,13 +54,13 @@ public class EventsResourceTest extends ResourceTest {
         assertThat("First element should have Trip as name", result.get(0).getName(), is("Trip"));
     }
 
-    //@Test
+    @Test
     public void shouldAddEvent() {
         //given
         Event event = new Event(1, "Big bird", new Date());
 
         //when
-        client().resource("/addEvent").put(Event.class, event);
+        client().resource("/addEvent").type(MediaType.APPLICATION_JSON_TYPE).put(Event.class, event);
 
         //then
         verify(eventsRepository).add(event);
