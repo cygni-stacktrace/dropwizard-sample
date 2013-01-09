@@ -12,9 +12,9 @@ import java.util.List;
 @RegisterMapper(ExpenseMapper.class)
 public interface ExpensesRepository {
 
-    public static final String TABLE_NAME = "expense";
+    static final String TABLE_NAME = "expense";
 
-    public static final String CREATE_TABLE_STATEMENT =
+    static final String CREATE_TABLE_STATEMENT =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                     "id SERIAL, " +
                     "description VARCHAR(40), " +

@@ -28,9 +28,6 @@ public class MainService extends Service<MainConfiguration> {
 
         final EventsRepository eventsRepository = dbi.onDemand(EventsRepository.class);
 
-        //final UserDAO dao = jdbi.onDemand(UserDAO.class);
-        //environment.addResource(new UserResource(dao));
-
         environment.addResource(new EventsResource(eventsRepository));
     }
 

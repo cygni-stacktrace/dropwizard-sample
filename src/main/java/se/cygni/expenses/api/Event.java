@@ -34,16 +34,23 @@ public class Event {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Event event = (Event) o;
 
-        if (id != event.id) return false;
-        if (date != null ? !date.equals(event.date) : event.date != null) return false;
-        if (name != null ? !name.equals(event.name) : event.name != null) return false;
+        if (id != event.id) {
+            return false;
+        }
+        if (date != null ? !date.equals(event.date) : event.date != null) {
+            return false;
+        }
+        return !(name != null ? !name.equals(event.name) : event.name != null);
 
-        return true;
     }
 
     @Override
