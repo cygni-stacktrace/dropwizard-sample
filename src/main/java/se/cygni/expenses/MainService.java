@@ -10,6 +10,7 @@ import org.skife.jdbi.v2.Handle;
 import se.cygni.expenses.jdbi.EventsRepository;
 import se.cygni.expenses.jdbi.ExpensesRepository;
 import se.cygni.expenses.resources.EventsResource;
+import se.cygni.expenses.resources.ExpensesResource;
 
 public class MainService extends Service<MainConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -27,8 +28,10 @@ public class MainService extends Service<MainConfiguration> {
         DBI dbi = initDatabaseConnection(config, environment);
 
         final EventsRepository eventsRepository = dbi.onDemand(EventsRepository.class);
+        final ExpensesRepository expensesRepository = dbi.onDemand(ExpensesRepository.class);
 
         environment.addResource(new EventsResource(eventsRepository));
+        environment.addResource(new ExpensesResource(expensesRepository));
     }
 
     private DBI initDatabaseConnection(MainConfiguration config, Environment environment) throws ClassNotFoundException {

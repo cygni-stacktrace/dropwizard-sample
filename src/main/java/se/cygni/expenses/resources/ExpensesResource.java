@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+@Path("/expense")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ExpensesResource {
@@ -22,7 +23,7 @@ public class ExpensesResource {
     }
 
     @PUT
-    @Path("/addExpense")
+    @Path("/add")
     public Response addExpense(Expense event) {
         expensesRepository.add(event);
         return Response.status(Response.Status.CREATED).build();
