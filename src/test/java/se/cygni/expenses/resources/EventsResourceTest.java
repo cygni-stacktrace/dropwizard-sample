@@ -2,21 +2,19 @@ package se.cygni.expenses.resources;
 
 import com.sun.jersey.api.client.GenericType;
 import com.yammer.dropwizard.testing.ResourceTest;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import se.cygni.expenses.api.Event;
 import se.cygni.expenses.jdbi.EventsRepository;
 
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class EventsResourceTest extends ResourceTest {
 
@@ -57,7 +55,9 @@ public class EventsResourceTest extends ResourceTest {
     @Test
     public void shouldAddEvent() {
         //given
-        Event event = new Event(1, "Big bird", new Date());
+        DateTime dateTime = new DateTime("2012-11-20");
+        Date date = dateTime.toDate();
+        Event event = new Event(1, "Big bird", date);
 
         //when
         client().resource("/addEvent").type(MediaType.APPLICATION_JSON_TYPE).put(Event.class, event);
