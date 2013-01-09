@@ -37,11 +37,11 @@ public class EventsResourceTest extends ResourceTest {
         //given
 
         //when
-        String result = client().resource("/").get(String.class);
+        Map<String, Object> result = client().resource("/").get(new GenericType<Map<String, Object>>() {});
 
         //then
-        assertThat("Result contains links element", result, is("{\"links\":\"/listEvents\"}"));
-
+        assertThat("Result contains links element", (String)((List)result.get("links")).get(0), is("http://localhost:9998/listEvents"));
+        assertThat("Result contains links element", (String)((List)result.get("links")).get(1), is("http://localhost:9998/addEvent"));
     }
 
     @Test

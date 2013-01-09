@@ -6,17 +6,22 @@ import se.cygni.expenses.jdbi.EventsRepository;
 import se.cygni.expenses.jdbi.ExpensesRepository;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Path("/")
+@Path("")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EventsResource {
 
+    public static final String LIST_EVENTS = "listEvents";
+    public static final String ADD_EVENT = "addEvent";
     private final EventsRepository eventsRepository;
     private final ExpensesRepository expensesRepository;
 
@@ -27,20 +32,25 @@ public class EventsResource {
     }
 
     @GET
-    public Map getEvents() {
-        HashMap<String,Object> hashMap = new HashMap<String, Object>();
-        hashMap.put("links", "/listEvents");
+    public Map getEvents(@Context UriInfo uriInfo) {
+
+        String baseUrl = uriInfo.getBaseUriBuilder().path(EventsResource.class).build().toString();
+        String listEvents = baseUrl + LIST_EVENTS;
+        String addEvent = baseUrl + ADD_EVENT;
+
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("links", Arrays.asList(listEvents, addEvent));
         return hashMap;
     }
 
     @GET
-    @Path("/listEvents")
+    @Path(LIST_EVENTS)
     public List<Event> listEvents() {
         return eventsRepository.findAll();
     }
 
     @PUT
-    @Path("/addEvent")
+    @Path(ADD_EVENT)
     public Response addEvent(Event event) {
         eventsRepository.add(event);
         return Response.status(Response.Status.CREATED).build();
@@ -58,6 +68,4 @@ public class EventsResource {
 
         return map;
     }
-
-
 }
