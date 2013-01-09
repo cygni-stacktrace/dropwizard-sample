@@ -49,13 +49,29 @@ public class EventsRepositoryTest {
         insertEvent(dbi, new Event(1, "Cancun", new Date(0)));
         insertEvent(dbi, new Event(2, "New Delhi", new Date(1554)));
 
-        EventsRepository target = dbi.open(EventsRepository.class);
+        EventsRepository target = dbi.onDemand(EventsRepository.class);
 
         //when
         List<Event> result = target.findAll();
 
         //then
         assertThat("result contains two elements", result.size(), is(2));
+    }
+
+    @Test
+    public void shouldFindEventById() {
+        //given
+        Event event = new Event(3, "Kiruna", new Date(0));
+        insertEvent(dbi, event);
+
+        EventsRepository target = dbi.onDemand(EventsRepository.class);
+
+        //when
+        Event result = target.findById(3);
+
+        //the
+        assertThat("Events are the same", result, is(event));
+
     }
 
     private void insertEvent(DBI dbi, Event event) {

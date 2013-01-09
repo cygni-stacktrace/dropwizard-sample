@@ -5,25 +5,31 @@ import com.yammer.dropwizard.testing.ResourceTest;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import se.cygni.expenses.api.Event;
+import se.cygni.expenses.api.Expense;
 import se.cygni.expenses.jdbi.EventsRepository;
+import se.cygni.expenses.jdbi.ExpensesRepository;
 
 import javax.ws.rs.core.MediaType;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
+import static com.yammer.dropwizard.testing.JsonHelpers.asJson;
+import static com.yammer.dropwizard.testing.JsonHelpers.fromJson;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 public class EventsResourceTest extends ResourceTest {
 
     private EventsRepository eventsRepository;
+    private ExpensesRepository expensesRepository;
 
     @Override
     protected void setUpResources() throws Exception {
+        expensesRepository = mock(ExpensesRepository.class);
         eventsRepository = mock(EventsRepository.class);
-        addResource(new EventsResource(eventsRepository));
+        addResource(new EventsResource(eventsRepository, expensesRepository));
     }
 
     @Test
@@ -64,5 +70,42 @@ public class EventsResourceTest extends ResourceTest {
 
         //then
         verify(eventsRepository).add(event);
+    }
+
+    @Test
+    public void shouldShowOneEvent() throws IOException {
+        //given
+        Event event = new Event(1,"An event", null);
+
+        given(eventsRepository.findById(event.getId())).willReturn(event);
+        given(expensesRepository.findExpensesForEventId(event.getId())).willReturn(Arrays.asList(new Expense(), new Expense()));
+
+        //when
+        Map<String, Object> result = client().resource("/event/1").get(new GenericType<Map<String, Object>>() {});
+
+        Event resultEvent = getEvent(result);
+        List<Expense> resultExpenses = getExpenses(result);
+
+        //then
+        assertThat("event should be returned", resultEvent, is(event));
+        assertThat("expenses are listed", resultExpenses.size(), is(2));
+
+
+    }
+
+    private Event getEvent(Map<String, Object> result) throws IOException {
+        String eventAsJson = asJson(result.get("event"));
+        return fromJson(eventAsJson, Event.class);
+    }
+
+    private List<Expense> getExpenses(Map<String, Object> result) throws IOException {
+        List expensesMap = (List) result.get("expenses");
+        List<Expense> resultExpenses = new ArrayList<Expense>();
+        for (Object expenseObject : expensesMap) {
+            Expense expense = fromJson(asJson(expenseObject), Expense.class);
+            resultExpenses.add(expense);
+
+        }
+        return resultExpenses;
     }
 }

@@ -1,5 +1,6 @@
 package se.cygni.expenses.jdbi;
 
+import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
@@ -26,4 +27,7 @@ public interface EventsRepository {
 
     @SqlUpdate("insert into event (name, date) values (:name, :date)")
     void add(@BindBean Event event);
+
+    @SqlQuery("select * from event where id=:id")
+    Event findById(@Bind("id") long id);
 }

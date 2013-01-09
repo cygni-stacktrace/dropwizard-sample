@@ -1,7 +1,9 @@
 package se.cygni.expenses.resources;
 
 import se.cygni.expenses.api.Event;
+import se.cygni.expenses.api.Expense;
 import se.cygni.expenses.jdbi.EventsRepository;
+import se.cygni.expenses.jdbi.ExpensesRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -16,10 +18,12 @@ import java.util.Map;
 public class EventsResource {
 
     private final EventsRepository eventsRepository;
+    private final ExpensesRepository expensesRepository;
 
-    public EventsResource(EventsRepository eventsRepository) {
+    public EventsResource(EventsRepository eventsRepository, ExpensesRepository expensesRepository) {
 
         this.eventsRepository = eventsRepository;
+        this.expensesRepository = expensesRepository;
     }
 
     @GET
@@ -40,6 +44,19 @@ public class EventsResource {
     public Response addEvent(Event event) {
         eventsRepository.add(event);
         return Response.status(Response.Status.CREATED).build();
+    }
+
+    @GET
+    @Path("event/{id}")
+    public Map<String, Object> showEvent(@PathParam("id") long id) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        Event event = eventsRepository.findById(id);
+        List<Expense> expensesForEventId = expensesRepository.findExpensesForEventId(event.getId());
+
+        map.put("event", event);
+        map.put("expenses", expensesForEventId);
+
+        return map;
     }
 
 
