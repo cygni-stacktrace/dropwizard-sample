@@ -59,25 +59,7 @@ public class Expense {
 
         Expense expense = (Expense) o;
 
-        if (amount != expense.amount) {
-            return false;
-        }
-        if (eventId != expense.eventId) {
-            return false;
-        }
-        if (id != expense.id) {
-            return false;
-        }
-        if (date != null ? !date.equals(expense.date) : expense.date != null) {
-            return false;
-        }
-        if (description != null ? !description.equals(expense.description) : expense.description != null) {
-            return false;
-        }
-        if (person != null ? !person.equals(expense.person) : expense.person != null) {
-            return false;
-        }
-        return true;
+        return id == expense.id;
     }
 
     @Override
