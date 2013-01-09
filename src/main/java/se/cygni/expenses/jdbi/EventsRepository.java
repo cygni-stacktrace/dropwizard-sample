@@ -11,9 +11,9 @@ import java.util.List;
 @RegisterMapper(EventMapper.class)
 public interface EventsRepository {
 
-    static final String TABLE_NAME = "event";
+    String TABLE_NAME = "event";
 
-    static final String CREATE_TABLE_STATEMENT =
+    String CREATE_TABLE_STATEMENT =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 "id SERIAL, " +
                 "name VARCHAR(40), " +
