@@ -1,9 +1,6 @@
 package se.cygni.expenses.jdbi;
 
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.BindBean;
-import org.skife.jdbi.v2.sqlobject.SqlQuery;
-import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import se.cygni.expenses.api.Expense;
 
@@ -32,7 +29,8 @@ public interface ExpensesRepository {
     @SqlQuery("select * from expense where eventId = :eventId")
     List<Expense> findExpensesForEventId(@Bind("eventId") long eventId);
 
+    @GetGeneratedKeys
     @SqlUpdate("insert into expense (description, person, date, amount, eventId) " +
             "values (:description, :person, :date, :amount, :eventId)")
-    void add(@BindBean Expense expense);
+    long add(@BindBean Expense expense);
 }
