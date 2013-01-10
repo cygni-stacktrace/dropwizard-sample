@@ -33,4 +33,7 @@ public interface ExpensesRepository {
     @SqlUpdate("insert into expense (description, person, date, amount, eventId) " +
             "values (:description, :person, :date, :amount, :eventId)")
     long add(@BindBean Expense expense);
+
+    @SqlQuery("select * from expense where id = :expenseId")
+    Expense findById(@Bind("expenseId") long expenseId);
 }

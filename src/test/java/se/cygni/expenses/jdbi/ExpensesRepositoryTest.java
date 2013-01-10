@@ -22,6 +22,10 @@ public class ExpensesRepositoryTest {
     private static DBI dbi;
     private static JdbcConnectionPool ds;
 
+    private static Expense dinner = new Expense(3, "Dinner at O Learys", "Kalle", new Date(342432432584L), 670, 2);
+    private static Expense taxi = new Expense(4, "Taxi home", "Filip", new Date(342432732584L), 345, 2);
+
+
     @BeforeClass
     public static void initDB() {
 
@@ -50,8 +54,8 @@ public class ExpensesRepositoryTest {
         insertEvent(dbi, new Event(1, "Cancun", new Date(0)));
         insertEvent(dbi, new Event(2, "New Delhi", new Date(1554)));
 
-        insertExpense(dbi, new Expense(3, "Dinner at O Learys", "Kalle", new Date(342432432584L), 670, 2));
-        insertExpense(dbi, new Expense(4, "Taxi Home", "Anders", new Date(342432437584L), 345, 2));
+        insertExpense(dbi, dinner);
+        insertExpense(dbi, taxi);
     }
 
     @Test
@@ -86,11 +90,26 @@ public class ExpensesRepositoryTest {
         assertThat("result contains two elements", result.size(), is(3));
     }
 
+    @Test
+    public void shouldRetreiveOneExpense() {
+
+        // given
+        initBaseData();
+
+        ExpensesRepository target = dbi.open(ExpensesRepository.class);
+
+        // when
+        Expense expense = target.findById(3);
+
+        // then
+        assertThat("Correct expense was fetched", expense.hashCode(), is(dinner.hashCode()));
+    }
+
     private void insertEvent(DBI dbi, Event event) {
 
         Handle handle = dbi.open();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 
         handle.execute("insert into event " +
                 "(id, name, date) " +
@@ -104,7 +123,7 @@ public class ExpensesRepositoryTest {
 
         Handle handle = dbi.open();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 
         handle.execute("insert into expense " +
                 "(id, description, person, date, amount, eventId) " +
@@ -116,6 +135,8 @@ public class ExpensesRepositoryTest {
                 expense.getAmount() + "," +
                 expense.getEventId() + "," +
                 ")");
+
+        handle.close();
     }
 
     private static void createTables(DBI dbi) {

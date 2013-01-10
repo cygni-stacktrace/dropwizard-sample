@@ -3,10 +3,7 @@ package se.cygni.expenses.resources;
 import se.cygni.expenses.api.Expense;
 import se.cygni.expenses.jdbi.ExpensesRepository;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -22,11 +19,18 @@ public class ExpensesResource {
         this.expensesRepository = eventsRepository;
     }
 
-    @PUT
-    @Path("/add")
-    public Response addExpense(Expense event) {
-        expensesRepository.add(event);
-        return Response.status(Response.Status.CREATED).build();
+    @GET
+    public Response listExpenses() {
+        return null;
+    }
+
+    @POST
+    public Response addExpense(Expense expense) {
+        long expenseId = expensesRepository.add(expense);
+
+        return Response.status(Response.Status.CREATED).
+                entity(expensesRepository.findById(expenseId)).
+                build();
     }
 
 
