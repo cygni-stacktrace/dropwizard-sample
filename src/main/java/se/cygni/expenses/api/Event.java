@@ -11,7 +11,7 @@ public class Event {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ssz")
     private Date date;
 
-    public Event() {
+    private Event() {
     }
 
     public Event(long id, String name, Date date) {
