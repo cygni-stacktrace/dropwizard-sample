@@ -1,5 +1,6 @@
 package se.cygni.expenses.resources;
 
+import com.sun.jersey.api.client.ClientResponse;
 import com.yammer.dropwizard.testing.ResourceTest;
 import org.junit.Test;
 import se.cygni.expenses.api.Expense;
@@ -44,10 +45,11 @@ public class ExpensesResourceTest extends ResourceTest {
         when(expensesRepository.findById(1L)).thenReturn(expenseCreated);
 
         //when
-        Expense result = client().resource("/expense").type(MediaType.APPLICATION_JSON_TYPE).post(Expense.class, expense);
+        ClientResponse result = client().resource("/expense").type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, expense);
 
         //then
         verify(expensesRepository).add(expense);
-        assertThat("Expense created and returned", result, is(expense));
+        assertThat("Response contains location of the created event", result.getLocation().toString(), is("http://localhost:9998/expense/1"));
+        assertThat("Expense created and returned", result.getEntity(Expense.class), is(expenseCreated));
     }
 }
