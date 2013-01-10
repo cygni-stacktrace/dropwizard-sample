@@ -43,7 +43,7 @@ public class EventsResource {
         String listEvents = baseUrl + LIST_EVENTS;
         String addEvent = baseUrl + ADD_EVENT;
 
-        OperationResult result = new OperationResult();
+        OperationResult result = new OperationResult(null);
         result.addLink(new Link("listEvents", listEvents, "GET", "Lists all events"));
         result.addLink(new Link("addEvent", addEvent, "POST", "Adds a new event"));
 
@@ -52,8 +52,9 @@ public class EventsResource {
 
     @GET
     @Path(LIST_EVENTS)
-    public List<Event> listEvents() {
-        return eventsRepository.findAll();
+    public OperationResult listEvents() {
+        List<Event> events = eventsRepository.findAll();
+        return new OperationResult(events);
     }
 
     @PUT
