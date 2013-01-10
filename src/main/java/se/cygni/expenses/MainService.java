@@ -30,7 +30,7 @@ public class MainService extends Service<MainConfiguration> {
         final EventsRepository eventsRepository = dbi.onDemand(EventsRepository.class);
         final ExpensesRepository expensesRepository = dbi.onDemand(ExpensesRepository.class);
 
-        environment.addResource(new EventsResource(eventsRepository, expensesRepository));
+        environment.addResource(new EventsResource(eventsRepository));
         environment.addResource(new ExpensesResource(expensesRepository));
     }
 
