@@ -29,7 +29,7 @@ public class ExpensesRepositoryTest {
     @BeforeClass
     public static void initDB() {
 
-        ds = JdbcConnectionPool.create("jdbc:h2:mem:test3", "sa", "");
+        ds = JdbcConnectionPool.create("jdbc:h2:mem:ExpensesRepositoryTest", "sa", "");
         dbi = new DBI(ds);
         createTables(dbi);
     }
